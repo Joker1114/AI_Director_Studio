@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-  E[Electron React - User PC] -->|HTTPS /api/v1| A[FastAPI Cloud]
+  E[Electron Vue 3 - User PC] -->|HTTPS /api/v1| A[FastAPI Cloud]
   A -->|HTTPS| Q[Qwen3.8 Cloud API]
   A --> DB[(PostgreSQL)]
   A --> MEDIA[(Media volume/object storage later)]
