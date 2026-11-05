@@ -1,0 +1,10 @@
+{
+  "id": "minimax_h3",
+  "name": "MiniMax H3 reference-to-video",
+  "workflow_file": "videos/minimax_h3/workflow_api.json",
+  "prompt_node": "265",
+  "prompt_field": "prompt",
+  "image_load_nodes": ["51", "49", "50"],
+  "seed_bindings": [{"node_id": "397", "field": "seed"}],
+  "output_nodes": ["364"]
+}

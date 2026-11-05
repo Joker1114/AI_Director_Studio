@@ -1,0 +1,15 @@
+node_modules/
+dist/
+out/
+release/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+*.db
+.pytest_cache/
+.ruff_cache/
+apps/api/data/
+apps/api/.venv/
+workflows/comfyui/videos/minimax_h3/workflow_api.json

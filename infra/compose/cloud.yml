@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: director
+      POSTGRES_USER: director
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U director -d director"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ../../apps/api
+    restart: unless-stopped
+    env_file:
+      - ../../apps/api/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://director:${POSTGRES_PASSWORD}@postgres:5432/director
+      COMFYUI_NODES_FILE: /opt/director/config/gpu_nodes.json
+      COMFYUI_WORKFLOW_ROOT: /opt/workflows
+      MEDIA_DIR: /opt/director/data/media
+      GENERATION_DIR: /opt/director/data/generated
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../../apps/api/config:/opt/director/config:ro
+      - ../../workflows/comfyui:/opt/workflows:ro
+      - media_data:/opt/director/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 10s
+      retries: 12
+      start_period: 30s
+
+  worker:
+    build:
+      context: ../../apps/api
+    command: ["python", "-m", "app.workers.generation"]
+    restart: unless-stopped
+    env_file:
+      - ../../apps/api/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://director:${POSTGRES_PASSWORD}@postgres:5432/director
+      COMFYUI_NODES_FILE: /opt/director/config/gpu_nodes.json
+      COMFYUI_WORKFLOW_ROOT: /opt/workflows
+      MEDIA_DIR: /opt/director/data/media
+      GENERATION_DIR: /opt/director/data/generated
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ../../apps/api/config:/opt/director/config:ro
+      - ../../workflows/comfyui:/opt/workflows:ro
+      - media_data:/opt/director/data
+
+volumes:
+  postgres_data:
+  media_data:

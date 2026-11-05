@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>AI短剧智能导演台 · V1</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">▣</span><div><b>AI短剧智能导演台</b><small>Qwen3.8 · 第一版</small></div></div>
+    <div class="toolbar">
+      <span class="label-muted">项目</span>
+      <select id="project-picker" aria-label="项目选择"><option value="">请选择项目</option></select>
+      <button id="refresh" class="secondary">刷新</button>
+      <button id="setup-token" class="secondary">访问令牌</button>
+      <span id="cloud-status" class="chip">检测服务中</span>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="section-overline">工作空间</div>
+      <nav id="navigation">
+        <button data-tab="script" class="active"><span>▤</span> 剧本解析</button>
+        <button data-tab="assets"><span>◈</span> 资产中心</button>
+        <button data-tab="shots"><span>▣</span> 智能分镜</button>
+        <button data-tab="audit"><span>◷</span> 调用记录</button>
+      </nav>
+      <div class="sidebar-note"><strong>第一版能力</strong><p>角色/场景/道具识别、审核、参考图上传、分镜与提示词润色。视频渲染将在后续版本接入。</p></div>
+    </aside>
+    <main class="main">
+      <div id="alert" role="status" aria-live="polite"></div>
+      <div id="content"></div>
+    </main>
+  </div>
+  <div id="overlay" class="overlay hidden"><div class="loading-card"><div class="spinner"></div><h3>正在处理</h3><p id="loading-msg">请求已提交，请勿重复操作</p></div></div>
+  <dialog id="modal"><div id="modal-content"></div><div class="dialog-actions"><button id="close-dialog" class="secondary">关闭</button></div></dialog>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

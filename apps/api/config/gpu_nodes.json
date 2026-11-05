@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {
+      "id": "gpu-01",
+      "name": "Example ComfyUI GPU server",
+      "base_url": "http://127.0.0.1:8188",
+      "models": ["minimax_h3"],
+      "enabled": false,
+      "timeout_seconds": 60
+    }
+  ]
+}
